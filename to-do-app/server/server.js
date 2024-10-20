@@ -4,8 +4,16 @@ const { v4: uuidv4 } = require("uuid");
 const cors = require("cors");
 const app = express();
 const pool = require("./db");
-const bcrypt = require("bcrypt");
+
 const jwt = require("jsonwebtoken");
+const { createClient } = require('@supabase/supabase-js');
+
+// Accessing environment variables
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
+
+// Creating a Supabase client
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 app.use(cors());
 app.use(express.json());
