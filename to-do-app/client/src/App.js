@@ -9,7 +9,7 @@ const App = () => {
 
   const getData = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/todos/${userEmail}`)
+      const response = await fetch(`${process.env.REACT_APP_SERVERURL}/todos/${userEmail}`)
       const json = await response.json()
       setTasks(json)
     } catch (error) {
@@ -25,8 +25,8 @@ const App = () => {
 
   return (
     <div className="app">
-      <ListHeader listName = {'✍🏻 Daily To-Do List'} />
-      {sortedTasks?.map((task) => <ListItem key={task.id} task={task} />)}
+      <ListHeader listName = {'✍🏻 Daily To-Do List'} getData={getData} />
+      {sortedTasks?.map((task) => <ListItem key={task.id} task={task} getData={getData} />)}
     </div>
   )
 }
