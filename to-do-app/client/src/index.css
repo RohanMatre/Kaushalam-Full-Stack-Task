@@ -16,7 +16,7 @@ body {
     margin-top: 50px;
 }
 
-.button-container {
+.button-container, .info-container {
     display: flex;
     align-items: center;
 }
@@ -29,10 +29,84 @@ body {
     background-color: transparent;
 }
 
+.edit {
+    color: #007bff;
+    border: 1px solid #007bff;
+}
+
+.edit:hover {
+    background-color: #007bff !important;
+    color: white;
+}
+
+.edit:active{
+    background-color: #0056b3 !important;
+    color: white;
+}
+
+.delete {
+    color: #dc3545;
+    border: 1px solid #dc3545;
+}
+
+.delete:hover {
+    background-color: #dc3545 !important;
+    color: white;
+}
+
+.delete:active{
+    background-color: #bd2130 !important;
+    color: white;
+}
+
+.create {
+    color: #28a745;
+    border: 1px solid #28a745;
+}
+
+.create:hover {
+    background-color: #28a745 !important;
+    color: white;
+}
+
+.create:active{
+    background-color: #218838 !important;
+    color: white;
+}
+
+.sign-out {
+    color: #6c757d;
+    border: 1px solid #6c757d;
+}
+
+.sign-out:hover {
+    background-color: #6c757d !important;
+    color: white;
+}
+
+.sign-out:active{
+    background-color: #545b62 !important;
+    color: white;
+}
+
 /*List Header*/
 .list-header {
     width: 100%;
     display: flex;
     justify-content: space-between;
     border-bottom: rgba(0, 0, 0, 0.05) 1px solid;
+}
+
+/* List Item */
+.list-item {
+    width: 100%;
+    margin: 10px 0;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.08) 0 0 0 1px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.tick {
+    padding: 10px;
 }
