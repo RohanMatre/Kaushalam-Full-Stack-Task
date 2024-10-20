@@ -1,5 +1,6 @@
 import { useState } from "react";
 import TickIcon from "./TickIcon";
+import UnTickIcon from "./UnTickIcon"; 
 import ProgressBar from "./ProgressBar";
 import Modal from "./Modal";
 
@@ -23,9 +24,9 @@ const ListItem = ({ task, getData }) => {
   return (
     <li className="list-item">
       <div className="info-container">
-        <TickIcon />
+        {task.progress === 100 ? <TickIcon /> : <UnTickIcon />} 
         <p className="task-title">{task.title}</p>
-        <ProgressBar />
+        <ProgressBar progress={task.progress} />
       </div>
 
       <div className="button-container">

@@ -2,61 +2,64 @@ import { useState } from "react";
 import { useCookies } from "react-cookie";
 
 const Modal = ({ mode, setShowModal, getData, task }) => {
-  const [cookies, setCookie, removeCookie] = useCookies(null);
-  const editMode = mode === "edit" ? true : false;
+  const [cookies] = useCookies(null); 
+  const editMode = mode === "edit";
 
   const [data, setData] = useState({
     user_email: editMode ? task.user_email : cookies.Email,
-    title: editMode ? task.title : null,
+    title: editMode ? task.title : "",
     progress: editMode ? task.progress : 0,
-    date: editMode ? task.date : new Date()
+    date: editMode ? task.date : new Date(),
   });
 
   const postData = async (e) => {
-    e.preventDefault()
-    try{
+    e.preventDefault();
+    try {
       const response = await fetch(`${process.env.REACT_APP_SERVERURL}/todos`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(data)
-      })
+        body: JSON.stringify(data),
+      });
       if (response.status === 200) {
-        console.log('Task added successfully')
-        setShowModal(false)
-        getData()
+        console.log("Task added successfully");
+        setShowModal(false);
+        getData();
       }
-    } catch(err) {
-      console.error(err)
+    } catch (err) {
+      console.error(err);
     }
-  }
+  };
 
-  const editData = async(e) => {
-    e.preventDefault()
-    try{
-      const response = await fetch(`${process.env.REACT_APP_SERVERURL}/todos/${task.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      })
+  const editData = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVERURL}/todos/${task.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
       if (response.status === 200) {
-        console.log('Task updated successfully')
-        setShowModal(false)
-        getData()
+        console.log("Task updated successfully");
+        setShowModal(false);
+        getData();
       }
-    } catch(err) {
-      console.error(err)
+    } catch (err) {
+      console.error(err);
     }
-  }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setData((data) => ({
-      ...data,
+    setData((prevData) => ({
+      ...prevData,
       [name]: value,
     }));
   };
@@ -79,7 +82,7 @@ const Modal = ({ mode, setShowModal, getData, task }) => {
             onChange={handleChange}
           />
           <br />
-          <label for="range">Drag to select your current progress:</label>
+          <label htmlFor="range">Drag to select your current progress:</label>
           <input
             required
             type="range"
@@ -90,8 +93,13 @@ const Modal = ({ mode, setShowModal, getData, task }) => {
             value={data.progress}
             onChange={handleChange}
           />
+          <span className="progress-indicator">Progress: {data.progress}%</span>
           <br />
-          <input className={mode} type="submit" onClick={editMode ? editData : postData} />
+          <input
+            className={mode}
+            type="submit"
+            onClick={editMode ? editData : postData}
+          />
         </form>
       </div>
     </div>
