@@ -4,16 +4,8 @@ const { v4: uuidv4 } = require("uuid");
 const cors = require("cors");
 const app = express();
 const pool = require("./db");
-
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { createClient } = require('@supabase/supabase-js');
-
-// Accessing environment variables
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
-
-// Creating a Supabase client
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 app.use(cors());
 app.use(express.json());
@@ -101,23 +93,22 @@ app.post("/signup", async (req, res) => {
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
-    const users = await pool.query(`SELECT * FROM users WHERE email = $1`, [
-      email,
-    ]);
-
-    if (!users.rows.length) return res.json({ detail: "User not found" });
-
-    const success = await bcrypt.compare(
-      password,
-      users.rows[0].hashed_password
+    const users = await pool.query(
+      `SELECT * FROM users WHERE email = $1`,
+      [email]
     );
+    
+    if (!users.rows.length) return res.json({ detail: "User not found" });
+    
+    const success = await bcrypt.compare(password, users.rows[0].hashed_password);
     const token = jwt.sign({ email }, "secret", { expiresIn: "1h" });
 
-    if (success) {
-      res.json({ email: users.rows[0].email, token });
+    if (success){
+        res.json({'email': users.rows[0].email, token})
     } else {
-      res.json({ detail: "Invalid credentials" });
+        res.json({ detail: "Invalid credentials" });
     }
+
   } catch (error) {
     console.error(error);
   }
